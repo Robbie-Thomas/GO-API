@@ -4,6 +4,8 @@ import(
 	"github.com/gorilla/mux"
 	"new/http"
 	"encoding/json"
+	"math/rand"
+	"strconv"
 )
 
 type Post struct {
@@ -27,5 +29,24 @@ func main() {
 }
 
 func getPosts(w http.ResponseWriter, r *http.Request){
-	w.Header().
+	w.Header().Set("Content-type", "application/json")
+	json.NewEncoder(w).Encode(posts)
+}
+
+func getPost(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for _, item := range posts{
+		if item.ID == params["id"]{
+			json.NewEncoder(w).Encode(item)
+			break
+		}
+		return
+	}
+	json.NewEncoder(w).Encode(&Post{})
+}
+
+
+func createPost(w http.ResponseWriter, r *http.Request){
+	
 }
